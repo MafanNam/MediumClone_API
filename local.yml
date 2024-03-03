@@ -9,8 +9,8 @@ services:
       - .:/app:z
       - static_volume:/app/staticfiles
       - media_volume:/app/mediafiles
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
@@ -41,6 +41,21 @@ services:
     networks:
       - medium-clone-api
 
+  nginx:
+    restart: always
+    depends_on:
+      - api
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
+    build:
+      context: ./docker/local/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - medium-clone-api
+
 networks:
   medium-clone-api:
     driver: bridge
@@ -49,5 +64,5 @@ networks:
 volumes:
   static_volume:
   media_volume:
-  local_postgres_data: {}
-  local_postgres_data_backups: {}
+  local_postgres_data: { }
+  local_postgres_data_backups: { }
