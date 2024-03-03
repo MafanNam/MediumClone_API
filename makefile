@@ -29,7 +29,7 @@ down-v:
 	docker compose -f local.yml down -v
 
 volume:
-	docker volume inspect src_local_postgres_data
+	docker volume inspect local_postgres_data
 
 medium-db:
 	docker compose -f local.yml exec postgres psql --username=mafan --dbname=medium-live
