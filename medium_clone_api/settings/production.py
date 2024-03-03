@@ -1,7 +1,7 @@
 from .base import *  # noqa
 from .base import env
 
-ADMINS = [('admin', 'admin@gmail.com')]
+ADMINS = [("admin", "admin@gmail.com")]
 
 # TODO: add domain names of the production server
-CSRF_TRUSTED_ORIGINS = ['']
+CSRF_TRUSTED_ORIGINS = [""]
