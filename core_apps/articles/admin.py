@@ -18,3 +18,10 @@ class ArticleViewAdmin(admin.ModelAdmin):
     list_filter = ('created_at', 'updated_at',)
     search_fields = ('article', 'user', 'viewer_ip')
     ordering = ('-created_at',)
+
+
+@admin.register(models.Clap)
+class ClapAdmin(admin.ModelAdmin):
+    list_display = ('pkid', 'id', 'user', 'article')
+    list_display_links = ('id', 'user')
+    list_filter = ('created_at', 'updated_at')

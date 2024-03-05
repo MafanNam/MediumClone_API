@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core_apps.articles.models import Article, ArticleView
+from core_apps.articles.models import Article, ArticleView, Clap
 from core_apps.profiles.api.serializers import ProfileSerializer
 from core_apps.bookmarks.models import Bookmark
 from core_apps.bookmarks.api.serializers import BookmarkSerializer
@@ -32,8 +32,12 @@ class ArticleSerializer(serializers.ModelSerializer):
     average_rating = serializers.ReadOnlyField()
     bookmarks = serializers.SerializerMethodField()
     bookmarks_count = serializers.SerializerMethodField()
+    claps_count = serializers.SerializerMethodField()
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
+
+    def get_claps_count(self, obj):
+        return obj.claps.count()
 
     def get_bookmarks(self, obj):
         bookmarks = Bookmark.objects.filter(article=obj)
@@ -89,5 +93,14 @@ class ArticleSerializer(serializers.ModelSerializer):
             'id', 'title', 'slug', 'tags', 'estimated_reading_time',
             'author_info', 'views', 'description', 'body', 'banner_image',
             'created_at', 'updated_at', 'average_rating', 'bookmarks',
-            'bookmarks_count',
+            'bookmarks_count', 'claps_count',
         ]
+
+
+class ClapSerializer(serializers.ModelSerializer):
+    article_title = serializers.CharField(source='article.title', read_only=True)
+    user_fist_name = serializers.CharField(source='user.first_name', read_only=True)
+
+    class Meta:
+        model = Clap
+        fields = ['id', 'user_fist_name', 'article_title']
