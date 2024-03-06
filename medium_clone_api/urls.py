@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/v1/articles/', include('core_apps.articles.api.urls')),
     path('api/v1/ratings/', include('core_apps.ratings.api.urls')),
     path('api/v1/bookmarks/', include('core_apps.bookmarks.api.urls')),
+    path('api/v1/responses/', include('core_apps.responses.api.urls')),
 ]
 
 admin.site.site_header = "Medium Clone API Admin"
