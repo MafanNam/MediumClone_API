@@ -1,8 +1,9 @@
 from rest_framework import serializers
+
 from core_apps.articles.models import Article, ArticleView, Clap
-from core_apps.profiles.api.serializers import ProfileSerializer
-from core_apps.bookmarks.models import Bookmark
 from core_apps.bookmarks.api.serializers import BookmarkSerializer
+from core_apps.bookmarks.models import Bookmark
+from core_apps.profiles.api.serializers import ProfileSerializer
 from core_apps.responses.api.serializers import ResponseSerializer
 
 
@@ -25,7 +26,7 @@ class TagListField(serializers.Field):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    author_info = ProfileSerializer(source='author.profile', read_only=True)
+    author_info = ProfileSerializer(source="author.profile", read_only=True)
     banner_image = serializers.SerializerMethodField()
     estimated_reading_time = serializers.ReadOnlyField()
     tags = TagListField()
@@ -35,7 +36,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     bookmarks_count = serializers.SerializerMethodField()
     claps_count = serializers.SerializerMethodField()
     responses = ResponseSerializer(many=True, read_only=True)
-    responses_count = serializers.IntegerField(source='responses.count', read_only=True)
+    responses_count = serializers.IntegerField(source="responses.count", read_only=True)
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
 
@@ -72,22 +73,24 @@ class ArticleSerializer(serializers.ModelSerializer):
         return formatted_date
 
     def create(self, validated_data):
-        tags = validated_data.pop('tags')
+        tags = validated_data.pop("tags")
         article = Article.objects.create(**validated_data)
 
         article.tags.set(tags)
         return article
 
     def update(self, instance, validated_data):
-        instance.author = validated_data.get('author', instance.author)
-        instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
-        instance.body = validated_data.get('body', instance.body)
-        instance.banner_image = validated_data.get('banner_image', instance.banner_image)
-        instance.updated_at = validated_data.get('updated_at', instance.updated_at)
+        instance.author = validated_data.get("author", instance.author)
+        instance.title = validated_data.get("title", instance.title)
+        instance.description = validated_data.get("description", instance.description)
+        instance.body = validated_data.get("body", instance.body)
+        instance.banner_image = validated_data.get(
+            "banner_image", instance.banner_image
+        )
+        instance.updated_at = validated_data.get("updated_at", instance.updated_at)
 
-        if 'tags' in validated_data:
-            instance.tags.set(validated_data['tags'])
+        if "tags" in validated_data:
+            instance.tags.set(validated_data["tags"])
 
         instance.save()
 
@@ -96,17 +99,31 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = [
-            'id', 'title', 'slug', 'tags', 'estimated_reading_time',
-            'author_info', 'views', 'description', 'body', 'banner_image',
-            'created_at', 'updated_at', 'average_rating', 'bookmarks',
-            'bookmarks_count', 'claps_count', 'responses', 'responses_count',
+            "id",
+            "title",
+            "slug",
+            "tags",
+            "estimated_reading_time",
+            "author_info",
+            "views",
+            "description",
+            "body",
+            "banner_image",
+            "created_at",
+            "updated_at",
+            "average_rating",
+            "bookmarks",
+            "bookmarks_count",
+            "claps_count",
+            "responses",
+            "responses_count",
         ]
 
 
 class ClapSerializer(serializers.ModelSerializer):
-    article_title = serializers.CharField(source='article.title', read_only=True)
-    user_fist_name = serializers.CharField(source='user.first_name', read_only=True)
+    article_title = serializers.CharField(source="article.title", read_only=True)
+    user_fist_name = serializers.CharField(source="user.first_name", read_only=True)
 
     class Meta:
         model = Clap
-        fields = ['id', 'user_fist_name', 'article_title']
+        fields = ["id", "user_fist_name", "article_title"]
