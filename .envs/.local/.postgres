@@ -3,3 +3,4 @@ POSTGRES_PORT=5432
 POSTGRES_DB=medium-live
 POSTGRES_USER=mafan
 POSTGRES_PASSWORD=Pass123456
+DATABASE_URL=postgres://mafan:Pass123456@postgres:5432/medium-live
