@@ -58,4 +58,15 @@ isort:
 search-index:
 	docker compose -f local.yml exec api python manage.py search_index --create
 
+cov:
+	docker compose -f local.yml run --rm api pytest -p no:warnings --cov=. -v
+
+cov-gen:
+	docker compose -f local.yml run --rm api pytest -p no:warnings --cov=. --cov-report html
+
+tests:
+	docker compose -f local.yml run --rm api pytest
+
+
+
 
